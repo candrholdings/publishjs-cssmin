@@ -13,7 +13,7 @@
                     processors: {
                         cssmin: require('../index')
                     }
-                }).build(function (pipe) {
+                }).build(function (pipe, callback) {
                     pipe.from(path.resolve(path.dirname(module.filename), 'integration-test-files'))
                         .cssmin()
                         .run(callback);
@@ -22,7 +22,7 @@
 
             'should returns a minified copy': function (topic) {
                 assert.equal(Object.getOwnPropertyNames(topic).length, 1);
-                assert.equal(topic['default.css'].buffer.toString(), 'html,body{font-family:Arial}');
+                assert.equal(topic['default.css'].toString(), 'html,body{font-family:Arial}');
             }
         }
     }).export(module);
