@@ -1,0 +1,28 @@
+{
+  "name": "publishjs-cssmin",
+  "version": "0.0.1-dev",
+  "description": "Integrate cssmin with PublishJS",
+  "keywords": [
+    "cssmin",
+    "grunt",
+    "gulp",
+    "publishjs"
+  ],
+  "license": "MIT",
+  "email": "william.wong@candrholdings.com",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/candrholdings/publishjs-cssmin.git"
+  },
+  "scripts": {
+    "test": "vows src/test/*-test.js --spec"
+  },
+  "dependencies": {
+    "cssmin": "^0.4.3",
+    "publishjs": "file:..\\core"
+  },
+  "devDependencies": {
+    "vows": "^0.8.1"
+  }
+}
