@@ -8,8 +8,8 @@
 
         Object.getOwnPropertyNames(inputs).forEach(function (filename) {
             var startTime = Date.now(),
-                original = inputs[filename].buffer,
-                minified = outputs[filename] = new Buffer(cssmin(inputs[filename].buffer.toString()));
+                original = inputs[filename],
+                minified = outputs[filename] = new Buffer(cssmin(original.toString()));
 
             that.log([
                 'Minified ',
