@@ -1,5 +1,8 @@
-!function (cssmin, number, time) {
+!function (cssmin, util) {
     'use strict';
+
+    var number = util.number,
+        time = util.time;
 
     module.exports = function (inputs, outputs, callback) {
         var that = this;
@@ -30,6 +33,5 @@
     };
 }(
     require('cssmin'),
-    require('./util/number'),
-    require('./util/time')
+    require('publishjs').util
 );
