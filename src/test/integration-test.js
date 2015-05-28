@@ -1,4 +1,4 @@
-!function (assert, path) {
+!function (assert, async, linq, path) {
     'use strict';
 
     require('vows').describe('Integration test').addBatch({
@@ -7,27 +7,47 @@
                 var callback = this.callback,
                     topic;
 
-                require('publishjs')({
-                    cache: false,
-                    log: false,
-                    processors: {
-                        cssmin: require('../index')
+                async.parallel({
+                    input: function (callback) {
+                        require('publishjs')({
+                            cache: false,
+                            log: false,
+                            processors: {
+                                cssmin: require('../index')
+                            }
+                        }).build(function (pipe, callback) {
+                            pipe.from(path.resolve(path.dirname(module.filename), 'integration-test-files/input'))
+                                .cssmin()
+                                .run(callback);
+                        }, callback);
+                    },
+                    baseline: function (callback) {
+                        require('publishjs')({
+                            cache: false,
+                            log: false
+                        }).build(function (pipe, callback) {
+                            pipe.from(path.resolve(path.dirname(module.filename), 'integration-test-files/baseline'))
+                                .run(callback);
+                        }, callback);
                     }
-                }).build(function (pipe, callback) {
-                    pipe.from(path.resolve(path.dirname(module.filename), 'integration-test-files'))
-                        .cssmin()
-                        .run(callback);
                 }, callback);
             },
 
             'should returns a minified copy': function (topic) {
-                assert.equal(Object.getOwnPropertyNames(topic).length, 2);
-                assert.equal(topic['default.css'].toString(), 'html,body{font-family:Arial}');
-                assert.equal(topic['index.html'].toString().replace(/\r/g, ''), '<!DOCTYPE html>\n<html lang="en-US">\n<head>\n    <style type="text/css">html body{font-family:Arial}</style>\n</head>\n</html>');
+                var input = linq(topic.input).select(function (buffer) {
+                        return buffer.toString().replace(/\r/g, '');
+                    }).run(),
+                    baseline = linq(topic.baseline).select(function (buffer) {
+                        return buffer.toString().replace(/\r/g, '');
+                    }).run();
+
+                assert.deepEqual(input, baseline);
             }
         }
     }).export(module);
 }(
     require('assert'),
+    require('async'),
+    require('async-linq'),
     require('path')
 );
