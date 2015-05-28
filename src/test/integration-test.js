@@ -21,8 +21,9 @@
             },
 
             'should returns a minified copy': function (topic) {
-                assert.equal(Object.getOwnPropertyNames(topic).length, 1);
+                assert.equal(Object.getOwnPropertyNames(topic).length, 2);
                 assert.equal(topic['default.css'].buffer.toString(), 'html,body{font-family:Arial}');
+                assert.equal(topic['index.html'].buffer.toString().replace(/\r/g, ''), '<!DOCTYPE html>\n<html lang="en-US">\n<head>\n    <style type="text/css">html body{font-family:Arial}</style>\n</head>\n</html>');
             }
         }
     }).export(module);
