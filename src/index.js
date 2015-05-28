@@ -41,8 +41,7 @@
         }
     }
 
-    function processHTML(text, callback) {
-        // callback(new Error('not implemented'));
+    function processHTML(text) {
         return replaceMultiple(
             text,
             [
