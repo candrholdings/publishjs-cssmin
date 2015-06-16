@@ -8,6 +8,10 @@
     module.exports = function (inputs, outputs, callback) {
         var that = this;
 
+        inputs.deleted.forEach(function (filename) {
+            outputs[filename] = null;
+        });
+
         inputs = inputs.newOrChanged;
 
         Object.getOwnPropertyNames(inputs).forEach(function (filename) {
@@ -33,11 +37,15 @@
         callback(null, outputs);
     };
 
-    function processFile(filename, buffer) {
-        if ((path.extname(filename) || '').toLowerCase() === '.html') {
-            return processHTML(buffer);
-        } else  {
-            return processCSS(buffer);
+    function processFile(filename, content) {
+        var extname = (path.extname(filename) || '').toLowerCase();
+
+        if (extname === '.html' || extname === '.htm') {
+            return processHTML(content);
+        } else if (extname === '.css') {
+            return processCSS(content);
+        } else {
+            return content;
         }
     }
 
