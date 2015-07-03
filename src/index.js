@@ -17,21 +17,27 @@
         Object.getOwnPropertyNames(inputs).forEach(function (filename) {
             var startTime = Date.now(),
                 original = inputs[filename],
-                minified = outputs[filename] = new Buffer(processFile(filename, original.toString()));
+                minified = processFile(filename, original.toString());
 
-            that.log([
-                'Minified ',
-                filename,
-                ', took ',
-                time.humanize(Date.now() - startTime),
-                ' (',
-                number.bytes(original.length),
-                ' -> ',
-                number.bytes(minified.length),
-                ', ',
-                (((minified.length / original.length) - 1) * 100).toFixed(1),
-                '%)'
-            ].join(''));
+            if (minified) {
+                var minifiedBuffer = outputs[filename] = new Buffer(minified);
+
+                that.log([
+                    'Minified ',
+                    filename,
+                    ', took ',
+                    time.humanize(Date.now() - startTime),
+                    ' (',
+                    number.bytes(original.length),
+                    ' -> ',
+                    number.bytes(minifiedBuffer.length),
+                    ', ',
+                    (((minifiedBuffer.length / original.length) - 1) * 100).toFixed(1),
+                    '%)'
+                ].join(''));
+            } else {
+                outputs[filename] = original;
+            }
         });
 
         callback(null, outputs);
@@ -44,8 +50,6 @@
             return processHTML(content);
         } else if (extname === '.css') {
             return processCSS(content);
-        } else {
-            return content;
         }
     }
 
