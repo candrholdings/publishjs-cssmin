@@ -17,7 +17,14 @@
         Object.getOwnPropertyNames(inputs).forEach(function (filename) {
             var startTime = Date.now(),
                 original = inputs[filename],
+                minified;
+
+            try {
                 minified = processFile(filename, original.toString());
+            } catch (ex) {
+                that.log('Failed to process ' + filename + ' due to ' + ex.message);
+                throw ex;
+            }
 
             if (minified) {
                 var minifiedBuffer = outputs[filename] = new Buffer(minified);
