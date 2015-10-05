@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "cssmin": "^0.4.3",
-    "publishjs": "git:git@github.com:candrholdings/publishjs.git"
+    "publishjs": "*"
   },
   "devDependencies": {
     "async": "^1.0.0",
