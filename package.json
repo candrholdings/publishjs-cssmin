@@ -1,6 +1,6 @@
 {
   "name": "publishjs-cssmin",
-  "version": "0.0.2-dev",
+  "version": "0.0.3",
   "description": "Integrate cssmin with PublishJS",
   "keywords": [
     "cssmin",
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "cssmin": "^0.4.3",
-    "publishjs": "*"
+    "publishjs": "^0.0.3"
   },
   "devDependencies": {
     "async": "^1.0.0",
